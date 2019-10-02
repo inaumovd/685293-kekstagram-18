@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url]
 
 * Студент: [Дмитрий  Наумов](https://up.htmlacademy.ru/javascript/18/user/685293).
-* Наставник: `Неизвестно`.
+* Наставник: `Без наставника`.
 
 ---
 
