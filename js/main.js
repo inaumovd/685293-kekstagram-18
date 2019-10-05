@@ -24,7 +24,9 @@ var NAMES = ['Александр', 'Марк', 'Георгий', 'Артемий
 
 var similarPhotoTemplate = document.querySelector('#picture').content.querySelector('.picture');
 var similarPhotoElement = document.querySelector('.pictures');
+var bigPicture = document.querySelector('.big-picture');
 var fragment = document.createDocumentFragment();
+
 
 var getRandomInt = function (min, max) {
   return Math.round(Math.random() * (max - min)) + min;
@@ -82,11 +84,28 @@ var renderPhoto = function (photo) {
 };
 
 var renderFragment = function (photos) {
-  console.log(photos);
   for (var i = 0; i < photos.length; i++) {
     fragment.appendChild(renderPhoto(photos[i]));
   }
   similarPhotoElement.appendChild(fragment);
 };
 
-renderFragment(getMockArray(25));
+var mock = getMockArray(25);
+renderFragment(mock);
+
+//Упорядочить если пригодится далее
+
+bigPicture.classList.remove('hidden');
+bigPicture.querySelector('.big-picture__img img').setAttribute('src', mock[1].url);
+bigPicture.querySelector('.likes-count').textContent = mock[1].likes;
+bigPicture.querySelector('.comments-count').textContent = mock[1].comments.lenght;
+
+var socialComments = bigPicture.querySelectorAll('.social__comment');
+
+for (var i = 0; i < socialComments.length; i++) {
+  for (var i = 0; i < mock[1].comments.length; i++) {
+    socialComments[i].querySelector('img').setAttribute('src', 'img/avatar-' + getRandomInt(1, 6) + '.svg');
+    socialComments[i].querySelector('img').setAttribute('alt', mock[1].comments[i].name);
+    socialComments[i].querySelector('.social__text').textContent = mock[1].comments[i].message ;
+  }
+}
