@@ -53,8 +53,7 @@
   var sliderInput = document.querySelector('.effect-level__value');
 
 //временно прячет редактор фото
-// imageSetupForm.classList.remove('hidden');
-
+imageSetupForm.classList.remove('hidden');
 
 //меняет фильтр на превью
   effectList.addEventListener('click', function (evt) {
@@ -73,7 +72,6 @@
 //меняет насыщенность фильтра
   var changeFilterStyle = function (image, type, value, postfix, max, min) {
     var filterValue = (max - min) * value + min;
-    console.log(filterValue);
     image.style.filter = type + '(' + filterValue + postfix + ')';
   }
 
@@ -93,13 +91,9 @@
   }
 
 //наложение фильтра после клика
-  sliderPin.addEventListener('mouseup', function() {
-    var currentFilter = document.querySelector('input[type="radio"]:checked').value;
-    var currentPosition = sliderPin.offsetLeft ;
-    var filterValue = makePinValueInPercent(currentPosition);
-    changeFilterStyle(previewImage, filters[currentFilter].filter, filterValue, filters[currentFilter].postfix, filters[currentFilter].max, filters[currentFilter].min);
-    sliderInput.setAttribute('value', filterValue * 100);
-  });
+  // sliderPin.addEventListener('mouseup', function() {
+  //
+  // });
 
 //настройка масштабирования изображения
   var scaleControlSmaller =  document.querySelector('.scale__control--smaller');
@@ -179,5 +173,42 @@
 
   hashTagInput.addEventListener('input', onHashtagInput);
 
-//добавить закрытие окна по esc и крестику
+//!!добавить закрытие окна по esc и крестику
+
+//module5-task3
+
+  var effectPin = document.querySelector('.effect-level__pin');
+
+  effectPin.addEventListener('mousedown', function(evt) {
+    var startCoordsX = evt.clientX;
+
+    var onMousemove = function (moveEvt) {
+      var shiftX = startCoordsX - moveEvt.x;
+      var position = effectPin.offsetLeft - shiftX;
+      startCoordsX = moveEvt.x;
+
+      if (position <= 0) {
+        position = 0;
+      }
+
+      if (position >= 450) {
+        position = 450;
+      }
+
+      effectPin.style.left = position + 'px';
+    };
+
+    var onMouseup = function (moveEvt) {
+      var currentFilter = document.querySelector('input[type="radio"]:checked').value;
+      var currentPosition = sliderPin.offsetLeft ;
+      var filterValue = makePinValueInPercent(currentPosition);
+      changeFilterStyle(previewImage, filters[currentFilter].filter, filterValue, filters[currentFilter].postfix, filters[currentFilter].max, filters[currentFilter].min);
+      sliderInput.setAttribute('value', filterValue * 100);
+      document.removeEventListener('mousemove', onMousemove);
+      document.removeEventListener('mouseup', onMouseup);
+    };
+
+    document.addEventListener('mousemove', onMousemove);
+    document.addEventListener('mouseup', onMouseup);
+  });
 })();
