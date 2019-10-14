@@ -53,7 +53,7 @@
   var sliderInput = document.querySelector('.effect-level__value');
 
 //временно прячет редактор фото
-imageSetupForm.classList.remove('hidden');
+// imageSetupForm.classList.remove('hidden');
 
 //меняет фильтр на превью
   effectList.addEventListener('click', function (evt) {
