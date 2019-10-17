@@ -23,11 +23,6 @@
     similarPhotoElement.appendChild(fragment);
   };
 
-//вставляем мок на страницу
-  // renderFragment(mock);
-
-
-
 //прячет развернутую фотографию
   // bigPicture.classList.remove('hidden');
 
@@ -40,12 +35,11 @@
     bigPicture.querySelector('.comments-count').textContent = photo.comments.lenght;
 
     //вставляет комментарии из массива комментариев обекта мока
-    for (var i = 0; i < socialComments.length; i++) {
-      for (var i = 0; i < photo.comments.length; i++) {
-        socialComments[i].querySelector('img').setAttribute('src', 'img/avatar-' + window.utils.getRandomInt(1, 6) + '.svg');
-        socialComments[i].querySelector('img').setAttribute('alt', photo.comments[i].name);
-        socialComments[i].querySelector('.social__text').textContent = photo.comments[i].message ;
-      }
+
+    for (var i = 0; i < socialComments.length - 1; i++) {
+      socialComments[i].querySelector('img').setAttribute('src', 'img/avatar-' + window.utils.getRandomInt(1, 6) + '.svg');
+      socialComments[i].querySelector('img').setAttribute('alt', photo.comments[i].name);
+      socialComments[i].querySelector('.social__text').textContent = photo.comments[i].message ;
     }
   };
 
@@ -64,7 +58,4 @@
   }
 
   window.load.load(onLoad, onError);
-
-//рендерит развернутую фотографию
-  // renderBigPicture(mock[1]);
 })();

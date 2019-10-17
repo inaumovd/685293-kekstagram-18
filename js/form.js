@@ -6,6 +6,7 @@
   var sliderPin = document.querySelector('.effect-level__pin');
   var previewImage = document.querySelector('.img-upload__preview img');
   var effectList = document.querySelector('.effects__list');
+  var effectPin = document.querySelector('.effect-level__pin');
 
   var filters = {
     none: {
@@ -52,16 +53,17 @@
   var slider = document.querySelector('.img-upload__effect-level');
   var sliderInput = document.querySelector('.effect-level__value');
 
-//временно прячет редактор фото
-// imageSetupForm.classList.remove('hidden');
 
 //меняет фильтр на превью
   effectList.addEventListener('click', function (evt) {
-    var currentFilter = evt.target.closest('input').getAttribute('value');
-    checkSliderShow(currentFilter);
-    previewImage.classList = 'img-upload__preview';
-    previewImage.classList.add(filters[currentFilter].class);
-    previewImage.removeAttribute('style');;
+    var currentFilter = evt.target.closest('input')
+    if (currentFilter) {
+      currentFilter = currentFilter.getAttribute('value');
+      checkSliderShow(currentFilter);
+      previewImage.classList = 'img-upload__preview';
+      previewImage.classList.add(filters[currentFilter].class);
+      previewImage.removeAttribute('style');
+    }
   });
 
 //запускает редактор после загрузки фото
@@ -124,36 +126,8 @@
   var uploadButton = document.querySelector('#upload-submit');
   var hashTagInput = document.querySelector('.text__hashtags');
 
-//валидация по клику на отправку формы
-  uploadButton.addEventListener('click', function(evt) {
-    if (hashTagInput.value !== '') {
-      var hashTagList = hashTagInput.value.toLowerCase().split(' ');
-      for (var i = 0; i < hashTagList.length; i++) {
-        console.log(hashTagList[i]);
-        var isHashTagValid = validationTagInput(hashTagList[i]);
-        if (!isHashTagValid) {
-          break;
-        }
-        var positionNextHashtag = i + 1;
-        if (hashTagList.indexOf(hashTagList[i], positionNextHashtag) > 0) {
-          hashTagInput.setCustomValidity('Один и тот же хэш-тег не может быть использован дважды');
-          break;
-        }
-      }
-      if (hashTagList.length > 5) {
-        console.log(hashTagList.length);
-        hashTagInput.setCustomValidity('Нельзя указать больше пяти хэш-тегов');
-        break;
-      }
-    }
-    if (!hashTagInput.validationMessage) {
-      evt.preventDefault();
-    }
-  });
-
-//проверка хэштега
+  //проверка хэштега
   var validationTagInput = function(hashtag) {
-    console.log(hashtag.length);
     if (hashtag[0] !== '#') {
       hashTagInput.setCustomValidity('Хеш-тег должен начинаться с символа #');
       return false;
@@ -167,6 +141,29 @@
     return true;
   };
 
+  //валидация по клику на отправку формы
+  uploadButton.addEventListener('click', function(evt) {
+
+    if (hashTagInput.value !== '') {
+      var hashTagList = hashTagInput.value.toLowerCase().split(' ');
+
+      for (var i = 0; i < hashTagList.length; i++) {
+        var isHashTagValid = validationTagInput(hashTagList[i]);
+        if (!isHashTagValid) {
+          break;
+        }
+        var positionNextHashtag = i + 1;
+        if (hashTagList.indexOf(hashTagList[i], positionNextHashtag) > 0) {
+          hashTagInput.setCustomValidity('Один и тот же хэш-тег не может быть использован дважды');
+          break;
+        }
+      }
+      if (hashTagList.length > 5) {
+        hashTagInput.setCustomValidity('Нельзя указать больше пяти хэш-тегов');
+      }
+    }
+  });
+
   var onHashtagInput = function () {
     hashTagInput.setCustomValidity('');
   };
@@ -175,10 +172,7 @@
 
 //!!добавить закрытие окна по esc и крестику
 
-//module5-task3
-
-  var effectPin = document.querySelector('.effect-level__pin');
-
+//обработчик движения пина насыщенности эффекта
   effectPin.addEventListener('mousedown', function(evt) {
     var startCoordsX = evt.clientX;
 
@@ -211,4 +205,25 @@
     document.addEventListener('mousemove', onMousemove);
     document.addEventListener('mouseup', onMouseup);
   });
+
+  //отправка данных на сервер
+  var form = document.querySelector('.img-upload__form');
+
+  var onSuccess = function () {
+    console.log('1');
+    // imageSetupForm.classList.add('hidden');
+    document.querySelector('#effect-none').checked = true;
+  }
+
+  var onError = function () {
+    console.log('0');
+  }
+
+  form.addEventListener('submit', function(evt){
+    window.load.upload(new FormData(form), onSuccess, onError)
+    evt.preventDefault();
+    previewImage.classList = 'img-upload__preview';
+    effectPin.style.left = '90px';
+    console.log('1');
+  })
 })();
