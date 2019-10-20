@@ -13,8 +13,15 @@
     return array[i];
   }
 
+  var removeRandomItem = function (array) {
+    var i = getRandomInt(0, array.length - 1);
+    var randomItem = array.splice(i, 1);
+    return randomItem[0];
+  }
+
   window.utils = {
     getRandomInt: getRandomInt,
-    getRandomItem: getRandomItem
+    getRandomItem: getRandomItem,
+    removeRandomItem: removeRandomItem
   };
 })();
